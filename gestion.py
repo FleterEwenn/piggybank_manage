@@ -8,6 +8,8 @@ screen = Tk()
 user_dict = {}
 
 is_draw = False
+btn_look = None
+btn_quit = None
 
 conn = sqlite3.connect('userdb.db')
 cur = conn.cursor()
@@ -239,8 +241,11 @@ def Looks():
     btn_color1.grid(row=0, column=0, padx=15)
     btn_color2.grid(row=0, column=1, padx=15)
 
-def Settings(btn_quit:Button, btn_look:Button):
-    global is_draw
+def Settings():
+    global is_draw, btn_look, btn_quit
+
+    if btn_quit is None or btn_look is None:
+        return
 
     if is_draw:
         btn_quit.grid_remove()
@@ -251,6 +256,10 @@ def Settings(btn_quit:Button, btn_look:Button):
     is_draw = not is_draw
 
 def Reset_screen():
+    global is_draw
+
+    is_draw = False
+
     try:
         frame2.destroy()
     except:
@@ -267,7 +276,7 @@ def Reset_screen():
         pass
 
 def app():
-    global frame, frame2
+    global frame, frame2, btn_quit, btn_look
 
     Reset_screen()
 
@@ -284,7 +293,7 @@ def app():
     btn_know = Button(frame, command=know_valeur, text="voir la valeur de la tirelire", font=("Arial", 30), bg=user_dict["color"][1], fg=user_dict["color"][0])
     btn_addcontrol = Button(frame, command=add, text="ajouter de l'argent à la tirelire", font=("Arial", 30), bg=user_dict["color"][1], fg=user_dict["color"][0])
     btn_soustrairecontrol = Button(frame, command=soustraire, text="retirer de l'argent à la tirelire", font=("Arial", 30), bg=user_dict["color"][1], fg=user_dict["color"][0])
-    btn_setting = Button(frame2, command=lambda : Settings(btn_quit, btn_look), text="paramètres", font=("Arial",20), bg=user_dict["color"][1], fg=user_dict["color"][0])
+    btn_setting = Button(frame2, command=Settings, text="paramètres", font=("Arial",20), bg=user_dict["color"][1], fg=user_dict["color"][0])
 
     btn_setting.grid(row=0, column=0, padx=(15, 0), pady=(15, 0))
     btn_entercontrol.grid(row=0, column=0, pady=25)
