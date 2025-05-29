@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import colorchooser
 import sqlite3
+import matplotlib.pyplot as plt
 # hashlib pour hasher les mdp
 
 screen = Tk()
@@ -14,7 +15,7 @@ btn_quit = None
 conn = sqlite3.connect('userdb.db')
 cur = conn.cursor()
 
-screen.title("gestion de tirelire")
+screen.title("PiggyBank")
 screen.geometry("1080x800")
 screen.minsize(500, 450)
 screen.config(background="#884EA0")
@@ -71,7 +72,7 @@ def check_username():
 def into_check_username(username, password):
     global user_dict
 
-    user_table_db = cur.execute("SELECT id, username, password, money, color FROM User WHERE username = ? AND password = ?", (username, password))
+    user_table_db = cur.execute("SELECT id, username, password, money, color, listValue FROM User WHERE username = ? AND password = ?", (username, password))
     user_table = user_table_db.fetchall()
     print(user_table)
 
@@ -80,8 +81,16 @@ def into_check_username(username, password):
         user_dict['username']= user_table[0][1]
         user_dict['password']= user_table[0][2]
         user_dict['money']= user_table[0][3]
-        user_dict["color"] = tuple()
-        user_dict['color'] = user_table[0][4].split(",", 1)
+        user_dict['color'] = tuple(user_table[0][4].split(",", 1))
+
+        try :
+            user_dict['list_value'] = list(user_table[0][5].split(",", len(user_table[0][5])))
+            for i in range(len(user_dict['list_value'])):
+                user_dict['list_value'][i] = float(user_dict['list_value'][i])
+                print('alright')
+        except IndexError:
+            print('error')
+            user_dict["list_value"] = [user_dict["money"]]
 
         print(user_dict)
 
@@ -210,7 +219,12 @@ def know_valeur():
 
 def save_quit():
     color = f"{user_dict['color'][0]},{user_dict['color'][1]}"
-    cur.execute("UPDATE User SET money=?, color=? WHERE id=?", (user_dict["money"], color, user_dict["id"]))
+    user_dict["list_value"].append(user_dict["money"])
+    listValue = ""
+    for elt in user_dict["list_value"]:
+        listValue += str(elt) + ','
+    listValue = listValue[:len(listValue)-1]
+    cur.execute("UPDATE User SET money=?, color=?, listValue=? WHERE id=?", (user_dict["money"], color, listValue, user_dict["id"]))
     conn.commit()
     conn.close()
     screen.destroy()
@@ -242,7 +256,7 @@ def Looks():
     btn_color2.grid(row=0, column=1, padx=15)
 
 def Settings():
-    global is_draw, btn_look, btn_quit
+    global is_draw, btn_look, btn_quit, btn_graphic
 
     if btn_quit is None or btn_look is None:
         return
@@ -250,9 +264,11 @@ def Settings():
     if is_draw:
         btn_quit.grid_remove()
         btn_look.grid_remove()
+        btn_graphic.grid_remove()
     else:
         btn_quit.grid(row=0, column=1, pady=(15, 0))
-        btn_look.grid(row=1, column=1, pady=(0, 15))
+        btn_look.grid(row=1, column=1)
+        btn_graphic.grid(row=2, column=1, pady=(0, 15))
     is_draw = not is_draw
 
 def Reset_screen():
@@ -275,8 +291,24 @@ def Reset_screen():
     except:
         pass
 
+def Graphic():
+    
+    if user_dict["list_value"] != []:
+        l_x = []
+        l_y = []
+        for i in range(len(user_dict["list_value"])):
+            l_x.append(i)
+            l_y.append(user_dict["list_value"][i])
+    
+        plt.plot(l_x, l_y, '-ob')
+
+        plt.xlabel('historique de la tirelire')
+        plt.axis((0, len(user_dict['list_value']), 0, max(user_dict['list_value'])+100))
+    
+        plt.show()
+
 def app():
-    global frame, frame2, btn_quit, btn_look
+    global frame, frame2, btn_quit, btn_look, btn_graphic
 
     Reset_screen()
 
@@ -288,6 +320,7 @@ def app():
 
     btn_quit = Button(frame2, command=save_quit, text="Sauvegarder et quitter", font=("Arial",20), bg=user_dict["color"][1], fg=user_dict["color"][0])
     btn_look = Button(frame2, command=Looks, text="Style", font=("Arial",20), bg=user_dict["color"][1], fg=user_dict["color"][0])
+    btn_graphic = Button(frame2, command=Graphic, text="analyser ma tirelire", font=("Arial",20), bg=user_dict["color"][1], fg=user_dict["color"][0])
 
     btn_entercontrol = Button(frame, command=enter_valeur_tirelire, text="entrer une valeur pour la tirelire", font=("Arial", 30), bg=user_dict["color"][1], fg=user_dict["color"][0])
     btn_know = Button(frame, command=know_valeur, text="voir la valeur de la tirelire", font=("Arial", 30), bg=user_dict["color"][1], fg=user_dict["color"][0])
