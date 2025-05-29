@@ -9,8 +9,6 @@ screen = Tk()
 user_dict = {}
 
 is_draw = False
-btn_look = None
-btn_quit = None
 
 conn = sqlite3.connect('userdb.db')
 cur = conn.cursor()
@@ -28,9 +26,13 @@ def error_tirelire(message):
         label_error.destroy()
     except:
         pass
-
-    label_error = Label(screen, text=message, font=("Arial", 35),
-                        bg=user_dict['color'][0], fg="red")
+    
+    try:
+        label_error = Label(screen, text=message, font=("Arial", 35), bg=user_dict['color'][0], fg="red")
+    
+    except KeyError:
+        label_error = Label(screen, text=message, font=("Arial", 35), bg="#884EA0", fg="red")
+    
     label_error.pack(side=BOTTOM)
 
     label_error.after(3000, label_error.destroy)
@@ -87,10 +89,8 @@ def into_check_username(username, password):
             user_dict['list_value'] = list(user_table[0][5].split(",", len(user_table[0][5])))
             for i in range(len(user_dict['list_value'])):
                 user_dict['list_value'][i] = float(user_dict['list_value'][i])
-                print('alright')
-        except IndexError:
-            print('error')
-            user_dict["list_value"] = [user_dict["money"]]
+        except IndexError and ValueError:
+            user_dict["list_value"] = []
 
         print(user_dict)
 
