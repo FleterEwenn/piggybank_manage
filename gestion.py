@@ -305,7 +305,7 @@ def Graphic():
     
         plt.plot(l_x, l_y, '-ob')
 
-        plt.xlabel('historique de la tirelire')
+        plt.ylabel('historique de la tirelire')
         plt.axis((0, len(user_dict['list_value']), 0, max(user_dict['list_value'])+100))
     
         plt.show()
