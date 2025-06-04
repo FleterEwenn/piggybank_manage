@@ -6,7 +6,7 @@ cur = conn.cursor()
 response = True
 
 while response:
-  response = input('>>  ')
-  cur.execute(response)
-  cur.commit()
+  response = input('>> ')
+  print(cur.execute(response).fetchall())
+  conn.commit()
 conn.close()
