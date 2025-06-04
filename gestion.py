@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import colorchooser
 import sqlite3
 import matplotlib.pyplot as plt
-# hashlib pour hasher les mdp
+import hashlib #mettre un salt à l'avenir
 
 screen = Tk()
 
@@ -71,10 +71,13 @@ def check_username():
     entry_password.bind('<Return>', lambda e: into_check_username(entry_username.get(), entry_password.get()))
     entry_username.bind('<Return>', lambda e: into_check_username(entry_username.get(), entry_password.get()))
 
-def into_check_username(username, password):
+def into_check_username(username:str, password:str):
     global user_dict
+    h_pass = hashlib.sha256()
+    h_pass.update(password.encode())
+    hash_password = h_pass.hexdigest()
 
-    user_table_db = cur.execute("SELECT id, username, password, money, color, listValue FROM User WHERE username = ? AND password = ?", (username, password))
+    user_table_db = cur.execute("SELECT id, username, password, money, color, listValue FROM User WHERE username = ? AND password = ?", (username, hash_password))
     user_table = user_table_db.fetchall()
     print(user_table)
 
