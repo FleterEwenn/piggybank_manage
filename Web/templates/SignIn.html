@@ -1,19 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     <title>PiggyBank</title>
-    <link rel='stylesheet' href='assets/style.css'>
 </head>
 <body>
     <h1>Inscrivez vous sur PiggyBank</h1>
-    <form method="get">
-        <label for="username">Entrez votre identifiant</label>
-        <input type="text" id="username"><br/>
-        <label for="username">Entrez votre mot de passe</label>
-        <input type="password" id="pwd"><br/>
-        <label for="username">Entrez à nouveau votre mot de passe</label>
-        <input type="password" id="pwdVerif"><br/>
+    <form action="{{ url_for('Download') }}" method="POST">
+
+        <p>
+            <label for="username">Entrez votre identifiant</label>
+            <input type="text" id="username" required/>
+        </p>
+
+        <p>
+            <label for="pwd">Entrez votre mot de passe</label>
+            <input type="password" id="pwd" required/>
+        </p>
+        <br/>
+
+        <p>
+            <input type="submit" value="S'inscrire"/>
+        </p>
     </form>
 </body>
 </html>
