@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, url_for, redirect
 
-from DB_manage import recup
+from DB_manage import insert_newuser
 
 app = Flask(__name__)
 
@@ -15,9 +15,11 @@ def SignIn():
 @app.route("/Download", methods=["GET", "POST"])
 def Download():
     if request.method == "POST":
-        res = recup()
-        print(res)
-        return render_template('Download.html')
+        dict_form = request.form
+        username = dict_form['username']
+        password = dict_form['password']
+        insert_newuser(username, password)
+        return render_template('Download.html', username=username)
     else:
         return redirect(url_for('Accueil'))
 

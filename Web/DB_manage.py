@@ -1,12 +1,15 @@
 import sqlite3
+import hashlib
 
-def recup(username, password):
+def insert_newuser(username : str, password : str):
     conn = sqlite3.connect('userdb.db')
 
+    h_pass = hashlib.sha256()
+    h_pass.update(password.encode())
+    password_hash = h_pass.hexdigest()
+
     cur = conn.cursor()
-    cur.execute("INSERT INTO User VALUES username=?, password=?, money=?, color=? ", (username, password, 0, '#9B59B6,black'))
+    cur.execute("INSERT INTO User (username, password, money, color, listValue) VALUES  (?, ?, ?, ?, ?)", (username, password_hash, 0, '#9B59B6,black', ""))
 
     conn.commit()
     conn.close()
-
-    return True
