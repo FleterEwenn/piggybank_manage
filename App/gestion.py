@@ -3,6 +3,8 @@ from tkinter import colorchooser
 import sqlite3
 import matplotlib.pyplot as plt
 import hashlib #mettre un salt à l'avenir
+import sys
+import os
 
 screen = Tk()
 
@@ -17,7 +19,15 @@ screen.title("PiggyBank")
 screen.geometry("1080x800")
 screen.minsize(500, 450)
 screen.config(background="#884EA0")
-screen.iconbitmap('assets/logo.ico')
+
+def resource_path(relative_path):
+    """Retourne le chemin absolu, compatible avec PyInstaller"""
+    base_path = getattr(sys, '_MEIPASS', os.path.abspath("."))
+    return os.path.join(base_path, relative_path)
+
+icon_path = resource_path("assets\logo.ico")
+
+screen.iconbitmap(icon_path)
 
 def error_tirelire(message):
     global label_error

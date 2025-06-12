@@ -7,6 +7,8 @@
     <title>PiggyBank</title>
 </head>
 <body>
-
+    <h1>Bonjour {{ username }}, merci de vous être inscrit sur PiggyBank</h1>
+    <h2>Vous pouvez maintenant télécharger l'application</h2>
+    <a href="{{ url_for('static', filename='gestion.exe') }}">Télécharger</a>
 </body>
 </html>
