@@ -1,3 +1,7 @@
 body{
-    background-color: #884EA0;
+    background-color : #884EA0;
+}
+
+#error {
+    color : red;
 }

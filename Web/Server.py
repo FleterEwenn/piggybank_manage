@@ -14,7 +14,8 @@ def SignIn():
 
 @app.route("/SignUp")
 def SignUp():
-    return render_template('SignUp.html')
+    error_message = request.args.get('error')
+    return render_template('SignUp.html', error=error_message)
 
 @app.route("/Download", methods=["GET", "POST"])
 def Download():
@@ -28,9 +29,11 @@ def Download():
             return render_template('Download.html', username=username, color=None)
 
         elif dict_form['form_id'] =='form_SU':
+
             user_table = signin_user(username, password)
-            if user_table == []:
-                return redirect(url_for('SignUp'))
+
+            if user_table == None:
+                return redirect(url_for("SignUp", error='Identifiant ou mot de passe incorrect'))
             
             else:
                 color = user_table[0][1].split(',', 1)
@@ -40,4 +43,4 @@ def Download():
         return redirect(url_for('Accueil'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

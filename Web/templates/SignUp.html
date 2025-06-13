@@ -7,7 +7,7 @@
     <title>PiggyBank</title>
 </head>
 <body>
-    <h1>Inscrivez vous sur PiggyBank</h1>
+    <h1>Connectez vous sur PiggyBank</h1>
     <form action="{{ url_for('Download') }}" method="POST">
         <input type="hidden" name="form_id" value="form_SU">
 
@@ -20,6 +20,9 @@
             <label for="pwd">Entrez votre mot de passe</label>
             <input type="password" name="password" id="pwd" required/>
         </p>
+        {% if error %}
+            <p id="error" >{{ error }}</p>
+        {% endif %}
         <br/>
 
         <p>

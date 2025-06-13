@@ -22,8 +22,13 @@ def signin_user(username : str, password : str):
     password_hash = h_pass.hexdigest()
 
     cur = conn.cursor()
-    res = cur.execute("SELECT id, color FROM User WHERE username=? AND password=?", (username, password_hash)).fetchall()
+    user_table_db = cur.execute("SELECT id, color FROM User WHERE username = ? AND password = ?", (username, password_hash))
+    user_table = user_table_db.fetchall()
 
     conn.commit()
     conn.close()
-    return res
+    
+    if user_table != []:
+        return user_table
+    else:
+        return None
