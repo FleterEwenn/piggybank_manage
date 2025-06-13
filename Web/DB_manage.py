@@ -13,3 +13,17 @@ def insert_newuser(username : str, password : str):
 
     conn.commit()
     conn.close()
+
+def signin_user(username : str, password : str):
+    conn = sqlite3.connect('userdb.db')
+
+    h_pass = hashlib.sha256()
+    h_pass.update(password.encode())
+    password_hash = h_pass.hexdigest()
+
+    cur = conn.cursor()
+    res = cur.execute("SELECT id, color FROM User WHERE username=? AND password=?", (username, password_hash)).fetchall()
+
+    conn.commit()
+    conn.close()
+    return res

@@ -6,9 +6,19 @@
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     <title>PiggyBank</title>
 </head>
-<body>
-    <h1>Bonjour {{ username }}, merci de vous être inscrit sur PiggyBank</h1>
+<body id="body">
+    {% if color is none %}
+        <h1>Bonjour {{ username }}, merci de vous être inscrit sur PiggyBank</h1>
+    {% else %}
+        <h1>Vous êtes conncté(e) en tant que {{ username }}</h1>
+    {% endif %}
     <h2>Vous pouvez maintenant télécharger l'application</h2>
     <a href="{{ url_for('static', filename='gestion.exe') }}">Télécharger</a>
+
+    {% if color is not none %}
+        <script>
+            document.getElementById("body").style.backgroundColor = "{{ color }}";
+        </script>
+    {% endif %}
 </body>
 </html>
