@@ -1,19 +1,16 @@
 from tkinter import *
 from tkinter import colorchooser
-import sqlite3
 import matplotlib.pyplot as plt
 import hashlib #mettre un salt à l'avenir
 import sys
 import os
+import requests
 
 screen = Tk()
 
 user_dict = {}
 
 is_draw = False
-
-conn = sqlite3.connect('userdb.db')
-cur = conn.cursor()
 
 screen.title("PiggyBank")
 screen.geometry("1080x800")
@@ -27,7 +24,7 @@ def resource_path(relative_path):
 
 icon_path = resource_path("assets\logo.ico")
 
-screen.iconbitmap(icon_path)
+#screen.iconbitmap(icon_path)
 
 def error_tirelire(message):
     global label_error
@@ -87,11 +84,13 @@ def into_check_username(username:str, password:str):
     h_pass.update(password.encode())
     hash_password = h_pass.hexdigest()
 
-    user_table_db = cur.execute("SELECT id, username, password, money, color, listValue FROM User WHERE username = ? AND password = ?", (username, hash_password))
-    user_table = user_table_db.fetchall()
-    print(user_table)
+    request_for_signin = requests.post("http://192.168.1.163:5000/DBforApp", data={'type':'signin','username' : username, 'password' : hash_password})
 
-    if user_table != []:
+
+    try:
+        user_table = request_for_signin.json()
+        print(user_table)
+
         user_dict['id'] = user_table[0][0]
         user_dict['username']= user_table[0][1]
         user_dict['password']= user_table[0][2]
@@ -111,9 +110,10 @@ def into_check_username(username:str, password:str):
 
         app()
     
-    else:
-        error_tirelire('Identifiant ou mot de passe incorrect')
-
+    except:
+        error = request_for_signin.text
+        error_tirelire(error)
+    
 def add():
     global ajouts_Entry, frame
 
@@ -237,9 +237,7 @@ def save_quit():
     for elt in user_dict["list_value"]:
         listValue += str(elt) + ','
     listValue = listValue[:len(listValue)-1]
-    cur.execute("UPDATE User SET money=?, color=?, listValue=? WHERE id=?", (user_dict["money"], color, listValue, user_dict["id"]))
-    conn.commit()
-    conn.close()
+    request = requests.post('http://192.168.1.163:5000/DBforApp', data={'type':'update', 'money':user_dict["money"], 'color':color, 'listValue':listValue, 'id':user_dict["id"]})
     screen.destroy()
     quit()
 

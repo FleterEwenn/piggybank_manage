@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, jsonify
 
-from DB_manage import insert_newuser, signin_user
+from DB_manage import insert_newuser, signin_user_forweb, signin_user_forapp, update_save_forapp
 
 app = Flask(__name__)
 
@@ -30,7 +30,7 @@ def Download():
 
         elif dict_form['form_id'] =='form_SU':
 
-            user_table = signin_user(username, password)
+            user_table = signin_user_forweb(username, password)
 
             if user_table == None:
                 return redirect(url_for("SignUp", error='Identifiant ou mot de passe incorrect'))
@@ -42,5 +42,24 @@ def Download():
     else:
         return redirect(url_for('Accueil'))
 
+@app.route("/DBforApp", methods=["POST"])
+def DBforApp():
+    if request.method == "POST":
+        dict_form = request.form
+        request_type = dict_form['type']
+
+        if request_type == 'signin':
+            response = signin_user_forapp(dict_form['username'], dict_form['password'])
+            return jsonify({ 'id' : response[0][0], 'username' : response[0][1], 'password' : response[0][2], 'money' : response[0][3], 'color' : response[0][4], 'listValue' : response[0][5]})
+
+        elif request_type == 'update':
+            response = update_save_forapp(dict_form['money'], dict_form['color'], dict_form['listValue'], dict_form['id'])
+        
+        else:
+            return 'request does not exist'
+    
+    else: 
+        return 'method is not allowed'
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=False)
