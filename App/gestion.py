@@ -1,10 +1,13 @@
 from tkinter import *
-from tkinter import colorchooser
+from tkinter import colorchooser, messagebox
 import matplotlib.pyplot as plt
 import hashlib #mettre un salt à l'avenir
 import sys
 import os
 import requests
+import webbrowser
+
+version = {'version' : '1.2.0'}
 
 screen = Tk()
 
@@ -17,6 +20,12 @@ screen.geometry("1080x800")
 screen.minsize(500, 450)
 screen.config(background="#884EA0")
 
+request_update = requests.post("http://192.168.1.163:5000/VerifUpdate", data=version)
+if request_update.text != 'NoUpdate':
+    response_messagbox = messagebox.askyesno('Confirmation', request_update.text)
+    if response_messagbox:
+        webbrowser.open('http://192.168.1.163:5000/Download')
+    
 def resource_path(relative_path):
     """Retourne le chemin absolu, compatible avec PyInstaller"""
     base_path = getattr(sys, '_MEIPASS', os.path.abspath("."))

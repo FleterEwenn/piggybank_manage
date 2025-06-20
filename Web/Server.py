@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, url_for, redirect, jsonify
+import json
 
 from DB_manage import insert_newuser, signin_user_forweb, signin_user_forapp, update_save_forapp
 
@@ -60,6 +61,24 @@ def DBforApp():
     
     else: 
         return 'method is not allowed'
+    
+@app.route("/VerifUpdate", methods=["POST"])
+def VerifUpdate():
+    with open('static/AppInfo.json', 'r') as file:
+        data = json.load(file)
+
+    version_user = request.form
+    major,minor,patch = data['version'].split('.', 2)
+    majorU,minorU,patchU = version_user['version'].split('.', 2)
+
+    if major > majorU:
+        return 'Une mise à jour très importante est disponible. Voulez-vous l\'installer ?'
+    elif minor > minorU:
+        return 'Une mise à jour est disponible. Voulez-vous l\'installer ?'
+    elif patch > patchU:
+        return 'Une correction de bugs à été réalisée. Voulez-vous l\'installer ?'
+    else:
+        return 'NoUpdate'
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    app.run(host='0.0.0.0', port=5000, debug=True)
