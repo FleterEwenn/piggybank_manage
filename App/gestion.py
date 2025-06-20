@@ -91,14 +91,14 @@ def into_check_username(username:str, password:str):
         user_table = request_for_signin.json()
         print(user_table)
 
-        user_dict['id'] = user_table[0][0]
-        user_dict['username']= user_table[0][1]
-        user_dict['password']= user_table[0][2]
-        user_dict['money']= user_table[0][3]
-        user_dict['color'] = tuple(user_table[0][4].split(",", 1))
+        user_dict['id'] = user_table['id']
+        user_dict['username']= user_table['username']
+        user_dict['password']= user_table['password']
+        user_dict['money']= user_table['money']
+        user_dict['color'] = tuple(user_table['color'].split(",", 1))
 
         try :
-            user_dict['list_value'] = list(user_table[0][5].split(",", len(user_table[0][5])))
+            user_dict['list_value'] = list(user_table['listValue'].split(",", len(user_table['listValue'])))
             for i in range(len(user_dict['list_value'])):
                 user_dict['list_value'][i] = float(user_dict['list_value'][i])
         except IndexError and ValueError:
