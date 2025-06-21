@@ -55,6 +55,7 @@ def DBforApp():
 
         elif request_type == 'update':
             response = update_save_forapp(dict_form['money'], dict_form['color'], dict_form['listValue'], dict_form['id'])
+            return "request execute perfectly"
         
         else:
             return 'request does not exist'
