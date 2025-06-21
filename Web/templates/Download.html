@@ -7,13 +7,19 @@
     <title>PiggyBank</title>
 </head>
 <body id="body">
+    <h1>Vous pouvez maintenant télécharger l'application</h1>
+    <br/>
+    <br/>
     {% if color is none %}
-        <h1>Bonjour {{ username }}, merci de vous être inscrit sur PiggyBank</h1>
+        <p>Bonjour {{ username }}, merci de vous être inscrit sur PiggyBank,</p>
     {% else %}
-        <h1>Vous êtes conncté(e) en tant que {{ username }}</h1>
+        <p>Vous êtes conncté(e) en tant que {{ username }}.</p>
     {% endif %}
-    <h2>Vous pouvez maintenant télécharger l'application</h2>
-    <a href="{{ url_for('static', filename='PiggyBank.exe') }}">Télécharger</a>
+    <p>Téléchargez l'application en cliquant sur le bouton :</p>
+
+    <p>
+        <a id="btnDownload" href="{{ url_for('static', filename='PiggyBank.exe') }}">Télécharger</a>
+    </p>
 
     {% if color is not none %}
         <script>

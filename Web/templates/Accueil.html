@@ -8,13 +8,24 @@
 </head>
 <body>
     <h1>Bienvenue sur PiggyBank</h1>
+    <br/>
+    <br/>
+
     <form action="{{ url_for('SignIn') }}" method="GET">
-        <p>Si vous n'êtes pas encore inscrit inscrivez vous pour pouvoir télécharger l'application</p>
-        <input type="submit" value="S'inscrire"/>
+        <p>Si vous n'êtes pas encore inscrit, inscrivez vous pour pouvoir télécharger l'application :</p>
+        <p>
+            <input class="btn" type="submit" value="S'inscrire"/>
+        </p>
     </form>
+
+    <br/>
+
     <form action="{{ url_for('SignUp') }}" method="GET">
-        <p>Si vous êtes déjà inscrit, vous pouvez vous connecter</p>
-        <input type="submit" value="Se connecter"/>
+        <p>Si vous êtes déjà inscrit, vous pouvez vous connecter :</p>
+        <p>
+            <input class="btn" type="submit" value="Se connecter"/>
+        </p>
     </form>
+
 </body>
 </html>

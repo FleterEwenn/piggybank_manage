@@ -1,7 +1,86 @@
-body{
+body {
     background-color : #884EA0;
 }
 
 #error {
     color : red;
+}
+
+h1 {
+    text-align: center;
+    font-size: 5em;
+    font-family: Tahoma;
+}
+
+p {
+    text-align: center;
+    font-size: 2.5em;
+    font-family: Trebuchet MS;
+}
+
+.btn {
+    padding: 0.4em 0.7em;
+    font-size: 0.8em;
+    color: #884EA0;
+    border-radius: 0.5em;
+    border: none;
+    background-color: #000000;
+    font-family: Trebuchet MS;
+}
+
+.btn:hover {
+    font-size: 0.85em;
+    background: linear-gradient(to right, #000000, #4b255b);
+}
+
+.inputText {
+    font-size: 0.8em;
+    border-radius: 1em;
+    border: none;
+}
+
+#btnDownload {
+    position: relative;
+    text-decoration: none;
+    background-color: #000000;
+    padding: 0.3em 0.7em;
+    border-radius: 0.3em;
+    color: #884EA0;
+    font-size: 1em;
+    overflow: hidden;
+    z-index: 10;
+}
+
+#btnDownload::before {
+    content: "";
+    visibility: hidden;
+    position: absolute;
+    background-color: #884EA0;
+    right: 75%;
+    height: 2px;
+    bottom: 10px;
+    width: 75%;
+    transition: right 0.5s ease;
+}
+
+#btnDownload:hover::before {
+    visibility: visible;
+    right: 12%;
+}
+
+#btnDownload::after {
+    content: "";
+    visibility: hidden;
+    position: absolute;
+    background-color: rgba(150, 150, 150, 0.2);
+    height: 100%;
+    right: 0%;
+    bottom: 0px;
+    width: 100%;
+    border-radius: 0.3em;
+    transition: right 0.2s ease;
+}
+
+#btnDownload:hover::after {
+    visibility: visible;
 }
