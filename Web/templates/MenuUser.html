@@ -6,15 +6,22 @@
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     <title>PiggyBank</title>
 </head>
-<body>
+<body id="body">
     <h1>Vous pouvez maintenant télécharger l'application</h1>
     <br/>
+    <p>Vous êtes connecté(e) en tant que {{ username }}.</p>
     <br/>
-    <p>Bonjour {{ username }}, merci de vous être inscrit sur PiggyBank,</p>
     <p>Téléchargez l'application en cliquant sur le bouton :</p>
 
     <p>
         <a id="btnDownload" href="{{ url_for('static', filename='PiggyBank.exe') }}">Télécharger</a>
     </p>
+    <br/>
+    <p>Faites nous part d'un probleme ou d'un conseil à cette adresse mail</p>
+
+    <script>
+            document.getElementById("body").style.backgroundColor = "{{ color }}";
+            document.getElementById("btnDownload").style.color = "{{ color }}"
+    </script>
 </body>
 </html>

@@ -25,20 +25,29 @@ def Download():
         username = dict_form['username']
         password = dict_form['password']
 
-        if dict_form['form_id'] == 'form_SI':
-            insert_newuser(username, password)
-            return render_template('Download.html', username=username, color=None)
+        insert_newuser(username, password)
+        return render_template('Download.html', username=username, color=None)
 
-        elif dict_form['form_id'] =='form_SU':
+    else:
+        return redirect(url_for('Accueil'))
 
-            user_table = signin_user_forweb(username, password)
+@app.route("/MenuUser", methods=["GET", "POST"])
+def MenuUser():
+    if request.method == "POST":
 
-            if user_table == None:
-                return redirect(url_for("SignUp", error='Identifiant ou mot de passe incorrect'))
+        dict_form = request.form
+        username = dict_form['username']
+        password = dict_form['password']
+
+
+        user_table = signin_user_forweb(username, password)
+
+        if user_table == None:
+            return redirect(url_for("SignUp", error='Identifiant ou mot de passe incorrect'))
             
-            else:
-                color = user_table[0][1].split(',', 1)
-                return render_template('Download.html', username=username, color=color[0])
+        else:
+            color = user_table[0][1].split(',', 1)
+            return render_template('MenuUser.html', username=username, color=color[0])
             
     else:
         return redirect(url_for('Accueil'))
