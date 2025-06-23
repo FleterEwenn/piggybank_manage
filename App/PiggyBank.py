@@ -20,11 +20,11 @@ screen.geometry("1080x800")
 screen.minsize(500, 450)
 screen.config(background="#884EA0")
 
-request_update = requests.post("http://192.168.1.163:5000/VerifUpdate", data=version)
+request_update = requests.post("http://192.168.1.32:5000/VerifUpdate", data=version)
 if request_update.text != 'NoUpdate':
     response_messagbox = messagebox.askyesno('Confirmation', request_update.text)
     if response_messagbox:
-        webbrowser.open('http://192.168.1.163:5000/Download')
+        webbrowser.open('http://192.168.1.32:5000/Download')
     
 def resource_path(relative_path):
     """Retourne le chemin absolu, compatible avec PyInstaller"""
@@ -93,7 +93,7 @@ def into_check_username(username:str, password:str):
     h_pass.update(password.encode())
     hash_password = h_pass.hexdigest()
 
-    request_for_signin = requests.post("http://192.168.1.163:5000/DBforApp", data={'type':'signin','username' : username, 'password' : hash_password})
+    request_for_signin = requests.post("http://192.168.1.32:5000/DBforApp", data={'type':'signin','username' : username, 'password' : hash_password})
 
 
     try:
@@ -246,7 +246,7 @@ def save_quit():
     for elt in user_dict["list_value"]:
         listValue += str(elt) + ','
     listValue = listValue[:len(listValue)-1]
-    request = requests.post('http://192.168.1.163:5000/DBforApp', data={'type':'update', 'money':user_dict["money"], 'color':color, 'listValue':listValue, 'id':user_dict["id"]})
+    request = requests.post('http://192.168.1.32:5000/DBforApp', data={'type':'update', 'money':user_dict["money"], 'color':color, 'listValue':listValue, 'id':user_dict["id"]})
     screen.destroy()
     quit()
 
