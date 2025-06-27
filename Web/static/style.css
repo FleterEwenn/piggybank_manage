@@ -86,3 +86,18 @@ p {
     visibility: visible;
     right:0%;
 }
+
+img {
+    display:block;
+    margin:auto;
+}
+
+h2 {
+    font-size: 4em;
+    text-align: center;
+    font-family: Tahoma;
+}
+
+img {
+    width: 33%;
+}
